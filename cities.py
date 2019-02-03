@@ -1,11 +1,11 @@
 import mysql.connector, requests, re, getpass, sys
 
 """
-This program first connects to a mysql server using input from the user. 
-After getting a list of cities from the user, it uses http requests to 
-find the driving distance of each city to all the other cities input by 
-the user, creates a table in the mysql database for all this information, \
-prints it to the screen, deletes the database, and exits.
+This program first connects to a mysql server. The user then inputs a list 
+of cities, and it uses http requests to find the driving distance of each 
+city to all the other cities input by the user, creates a table in the 
+mysql database for all this information, prints it to the screen, deletes 
+the database, and exits.
 
 Next step is making it object oriented.
 
@@ -57,9 +57,19 @@ mydb = connectToDatabase()
 
 citiesList = []
 
-statesList = ['AK', 'AL', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
+statesList = ['AK', 'AL', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', \
+        'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', \
+        'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', \
+        'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
 
-statesString = """Alabama - AL\tAlaska - AK\tArizona - AZ\tArkansas - AR\tCalifornia - CA\tColorado - CO\tConnecticut - CT\tDelaware - DE\tFlorida - FL\tGeorgia - GA\tHawaii - HI\tIdaho - ID\tIllinois - IL\tIndiana - IN\tIowa - IA\tKansas - KS\tKentucky - KY\tLouisiana - LA\tMaine - ME\tMaryland - MD\tMassachusetts - MA\tMichigan - MI\tMinnesota - MN\tMississippi - MS\tMissouri - MO\tMontana - MT\tNebraska - NE\tNevada - NV\tNew Hampshire - NH\tNew Jersey - NJ\tNew Mexico - NM\tNew York - NY\tNorth Carolina - NC\tNorth Dakota - ND\tOhio - OH\tOklahoma - OK\tOregon - OR\tPennsylvania - PA\tRhode Island - RI\tSouth Carolina - SC\tSouth Dakota - SD\tTennessee - TN\tTexas - TX\tUtah - UT\tVermont - VT\tVirginia - VA\tWashington - WA\tWest Virginia - WV\tWisconsin - WI\tWyoming - WY\n\n"""
+statesString = """Alabama - AL\tAlaska - AK\tArizona - AZ\tArkansas - AR\tCalifornia - CA\tColorado - CO\t
+Connecticut - CT\tDelaware - DE\tFlorida - FL\tGeorgia - GA\tHawaii - HI\tIdaho - ID\tIllinois - IL\t
+Indiana - IN\tIowa - IA\tKansas - KS\tKentucky - KY\tLouisiana - LA\tMaine - ME\tMaryland - MD\t
+Massachusetts - MA\tMichigan - MI\tMinnesota - MN\tMississippi - MS\tMissouri - MO\tMontana - MT\t
+Nebraska - NE\tNevada - NV\tNew Hampshire - NH\tNew Jersey - NJ\tNew Mexico - NM\tNew York - NY\t
+North Carolina - NC\tNorth Dakota - ND\tOhio - OH\tOklahoma - OK\tOregon - OR\tPennsylvania - PA\t
+Rhode Island - RI\tSouth Carolina - SC\tSouth Dakota - SD\tTennessee - TN\tTexas - TX\tUtah - UT\t
+Vermont - VT\tVirginia - VA\tWashington - WA\tWest Virginia - WV\tWisconsin - WI\tWyoming - WY\n\n"""
 
 
 def printStates():
@@ -71,7 +81,8 @@ while True:
         newstate = input("\nWhat state is {} in? (format: PA for Pennsylvania): ".format(newcity))
         while newstate.upper() not in statesList:
             if newstate != 'help' and newstate != 'h':
-                print("\nBad input. Enter 'help' or 'h' to display list of states with their two letter abbreviations.")
+                print("\nBad input. Enter 'help' or 'h' to display list of states with their two \
+                        letter abbreviations.")
             newstate = input("\nPlease enter two letters of {}'s state: ".format(newcity))
             if newstate == "help" or newstate == "h":
                 printStates()
@@ -117,7 +128,8 @@ for city1 in citiesList:
 
     for city2 in citiesList:
         dist = getDistance(city1, city2)
-        distanceDict["distanceTo{}".format(city2.replace(',', '').replace(' ', ''))] = dist.replace(",", "")
+        distanceDict["distanceTo{}".format(city2.replace(',', '').replace(' ', ''))] = \
+                dist.replace(",", "")
 
     record = (city1, )
     for key, value in distanceDict.items():
