@@ -8,17 +8,17 @@ import requests
 
 class CitySearch:
     """This program first connects to a mysql server. The user inputs a
-    list of cities, and it uses http requests to find the driving 
+    list of cities, and it uses http requests to find the driving
     distance of each city to all the other cities input by the user,
-    creates a table in the mysql database for all this information, 
+    creates a table in the mysql database for all this information,
     prints it to the screen, deletes the database, and exits.
     """
-    states_list = ['AK', 'AL', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL',
-            'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME',
-            'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH',
-            'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI',
-            'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI',
-            'WY']
+    states_list = [
+            'AK', 'AL', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+            'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+            'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+            'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
+            'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
 
     states_string = """Alabama - AL\tAlaska - AK\tArizona - AZ\t
     Arkansas - AR\tCalifornia - CA\tColorado - CO\tConnecticut - CT\t
@@ -48,11 +48,12 @@ class CitySearch:
         self.delete_database_and_exit()
 
     def connect_to_MySQL_server(self):
-        """Take MySQL server ip address, username and password entered 
+        """Take MySQL server ip address, username and password entered
         by user, and connect.
         """
-        self.host_ip = input("\nEnter ip of database host, or just hit enter "
-                        "for 127.0.0.1): ")
+        self.host_ip = input(
+            "\nEnter ip of database host, or just hit enter "
+            "for 127.0.0.1): ")
         if self.host_ip == "":
             self.host_ip = '127.0.0.1'
         self.username = input("Enter username for {}: ".format(self.host_ip))
@@ -60,9 +61,9 @@ class CitySearch:
             "Enter password for {}: ".format(self.username))
         try:
             self.my_db = mysql.connector.connect(
-                    host = self.host_ip,
-                    user = self.username,
-                    passwd = self.password,
+                    host=self.host_ip,
+                    user=self.username,
+                    passwd=self.password,
                     )
         except mysql.connector.errors.ProgrammingError:
             print("\nFailed to connect to {}. Exiting.\n".format(self.host_ip))
@@ -77,15 +78,15 @@ class CitySearch:
         city1_for_link = city1.replace(" ", "+")
         city2_for_link = city2.replace(" ", "+")
 
-        link = ("https://www.travelmath.com"
+        link = (
+            "https://www.travelmath.com"
             "/drive-distance/from/{}/to/{}".format(
-                                            city1_for_link, city2_for_link))
-
-        ua = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:65.0) '
-                                                'Gecko/20100101 Firefox/65.0'}
-
-
+                city1_for_link, city2_for_link))
+        ua = {
+            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:65.0) '
+            'Gecko/20100101 Firefox/65.0'}
         response = requests.get(link, headers=ua)
+
         try:
             search_string = (
                 "The total driving distance "
@@ -102,11 +103,11 @@ class CitySearch:
         50 states and their abbreviations.
         """
         print(
-            "\nList of 50 states with their abbreviations:\n\n" 
+            "\nList of 50 states with their abbreviations:\n\n"
             + self.states_string)
 
     def create_city_list(self):
-        """Allow user to input as many cities as they want and put them 
+        """Allow user to input as many cities as they want and put them
         in self.cities_list[].
         """
         while True:
@@ -135,11 +136,11 @@ class CitySearch:
                 break
 
     def create_database(self):
-        """Creates a MySQL database and table. Inside the table, each 
+        """Creates a MySQL database and table. Inside the table, each
         city gets its own record. The fields are the distance from
         that city to each of the other cities entered by the user.
         For example, if the user entered New York, NY, Santa Cruz, CA,
-        and Detroit, MI, the first row would belong to New York and the 
+        and Detroit, MI, the first row would belong to New York and the
         fields would be distanceToSantaCruzCA and distanceToDetroitMI.
         The get_distance() method is used to find the distance between
         any two given cities.
@@ -191,7 +192,7 @@ class CitySearch:
             self.my_db.commit()
 
     def print_database_table(self):
-        """This method prints the database created in the 
+        """This method prints the database created in the
         create_database() method to the screen, formatted to make it
         easy on the eyes.
         """
@@ -212,7 +213,7 @@ class CitySearch:
             for item in row:
                 if item == row[0]:
                     print(item.ljust(22), end="")
-                else:    
+                else:
                     print(str(item).ljust(23), end="")
             print()
 
@@ -229,7 +230,7 @@ class CitySearch:
             if db[0] == 'citiesdata':
                 self.database_deleted = False
                 break
-        if self.database_deleted == True:
+        if self.database_deleted:
             print("\nDatabase deleted.\n\n")
         else:
             print("\nWarning: Database not deleted.\n\n")
