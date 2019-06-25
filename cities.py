@@ -1,6 +1,7 @@
 import re
 import getpass
 import sys
+import time
 
 import mysql.connector
 import requests
@@ -85,7 +86,9 @@ class CitySearch:
         ua = {
             'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:65.0) '
             'Gecko/20100101 Firefox/65.0'}
+
         response = requests.get(link, headers=ua)
+        time.sleep(.5)
 
         try:
             search_string = (
@@ -129,7 +132,7 @@ class CitySearch:
                         self.print_states()
                 new_city += ", {}".format(new_state.upper())
                 if new_city in self.cities_list:
-                    print("You already entered {}\n".format(new_city))
+                    print("You already entered {}".format(new_city))
                     continue
                 self.cities_list.append(new_city)
             else:
@@ -199,7 +202,7 @@ class CitySearch:
         self.my_cursor.execute("SELECT * FROM citiesDistance")
         result = self.my_cursor.fetchall()
 
-        table_column_label_string = "\n\nCity ".ljust(24)
+        table_column_label_string = "City ".ljust(22)
         table_column_label_line = "----".ljust(22)
 
         for city in self.cities_list:
@@ -231,7 +234,7 @@ class CitySearch:
                 self.database_deleted = False
                 break
         if self.database_deleted:
-            print("\nDatabase deleted.\n\n")
+            print("\n\t\tDatabase deleted.\n")
         else:
             print("\nWarning: Database not deleted.\n\n")
         self.my_db.close()
