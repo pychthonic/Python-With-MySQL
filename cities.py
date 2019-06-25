@@ -53,7 +53,7 @@ class CitySearch:
         by user, and connect.
         """
         self.host_ip = input(
-            "\nEnter ip of database host, or just hit enter "
+            "\nEnter IP address of MYSQL database host, or just hit enter "
             "for 127.0.0.1): ")
         if self.host_ip == "":
             self.host_ip = '127.0.0.1'
