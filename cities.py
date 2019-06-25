@@ -56,9 +56,9 @@ class CitySearch:
             "for 127.0.0.1): ")
         if self.host_ip == "":
             self.host_ip = '127.0.0.1'
-        self.username = input("Enter username for {}: ".format(self.host_ip))
+        self.username = input("\n\tEnter username for {}: ".format(self.host_ip))
         self.password = getpass.getpass(
-            "Enter password for {}: ".format(self.username))
+            "\tEnter password for {}: ".format(self.username))
         try:
             self.my_db = mysql.connector.connect(
                     host=self.host_ip,
@@ -66,10 +66,10 @@ class CitySearch:
                     passwd=self.password,
                     )
         except mysql.connector.errors.ProgrammingError:
-            print("\nFailed to connect to {}. Exiting.\n".format(self.host_ip))
+            print("\n\t\tFailed to connect to {}. Exiting.\n".format(self.host_ip))
             sys.exit()
 
-        print("\nSuccessfully connected to {}\n".format(self.host_ip))
+        print("\n\t\tSuccessfully connected to {}".format(self.host_ip))
 
     def get_distance(self, city1, city2):
         """Take two cities, and use requests module to find driving
@@ -115,7 +115,7 @@ class CitySearch:
                 "\nEnter a city, or just enter when finished: ").title()
             if new_city:
                 new_state = input(
-                    "\nWhat state is {} in? "
+                    "What state is {} in? "
                     "(format: PA for Pennsylvania): ".format(new_city))
                 while new_state.upper() not in self.states_list:
                     if new_state != 'help' and new_state != 'h':
@@ -145,7 +145,7 @@ class CitySearch:
         The get_distance() method is used to find the distance between
         any two given cities.
         """
-        print('\n\nCreating database...\n\n')
+        print('\n\t\t\t...Creating database...\n')
         self.my_cursor = self.my_db.cursor()
         self.my_cursor.execute("CREATE DATABASE IF NOT EXISTS citiesdata;")
         self.my_cursor.execute("USE citiesdata;")
