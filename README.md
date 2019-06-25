@@ -10,7 +10,7 @@ all this information, prints it to the screen, deletes
 the database, and exits.
 
 
-Here is a screenshot of it running. The user here inputs 6
+Here is a screenshot of it running. The user inputs 6
 cities.
 
 
